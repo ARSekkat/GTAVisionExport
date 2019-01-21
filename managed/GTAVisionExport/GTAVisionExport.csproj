@@ -57,7 +57,6 @@
     </Reference>
     <Reference Include="BitMiracle.LibTiff.NET, Version=2.4.571.0, Culture=neutral, PublicKeyToken=53879b3e20e7a7d6, processorArchitecture=MSIL">
       <HintPath>..\packages\BitMiracle.LibTiff.NET.2.4.571\lib\net20\BitMiracle.LibTiff.NET.dll</HintPath>
-      <Private>True</Private>
     </Reference>
     <Reference Include="INIFileParser, Version=2.4.0.0, Culture=neutral, PublicKeyToken=79af7b307b65cf3c, processorArchitecture=MSIL">
       <HintPath>..\packages\ini-parser.2.4.0\lib\net20\INIFileParser.dll</HintPath>
@@ -75,7 +74,7 @@
       <HintPath>..\packages\Microsoft.Extensions.Logging.Abstractions.1.1.0\lib\netstandard1.1\Microsoft.Extensions.Logging.Abstractions.dll</HintPath>
     </Reference>
     <Reference Include="NativeUI">
-      <HintPath>C:\Program Files\Rockstar Games\Grand Theft Auto V\Scripts\NativeUI.dll</HintPath>
+      <HintPath>..\..\..\NativeUI.dll</HintPath>
     </Reference>
     <Reference Include="Npgsql, Version=3.2.1.0, Culture=neutral, PublicKeyToken=5d8b90d52f46fda7, processorArchitecture=MSIL">
       <HintPath>..\packages\Npgsql.3.2.1\lib\net451\Npgsql.dll</HintPath>
@@ -83,7 +82,7 @@
     <Reference Include="PresentationCore" />
     <Reference Include="PresentationFramework" />
     <Reference Include="ScriptHookVDotNet2">
-      <HintPath>C:\Program Files\Rockstar Games\Grand Theft Auto V\ScriptHookVDotNet2.dll</HintPath>
+      <HintPath>..\..\..\..\..\Games\Grand Theft Auto V 1\ScriptHookVDotNet2.dll</HintPath>
     </Reference>
     <Reference Include="System" />
     <Reference Include="System.ComponentModel.Composition" />
@@ -109,10 +108,10 @@
     <Reference Include="System.Net.Http" />
     <Reference Include="System.Xml" />
     <Reference Include="VAutodrive">
-      <HintPath>C:\Program Files\Rockstar Games\Grand Theft Auto V\Scripts\VAutodrive.dll</HintPath>
+      <HintPath>..\..\..\VAutodrive.dll</HintPath>
     </Reference>
     <Reference Include="VCommonFunctions">
-      <HintPath>C:\Program Files\Rockstar Games\Grand Theft Auto V\Scripts\VCommonFunctions.dll</HintPath>
+      <HintPath>..\..\..\VCommonFunctions.dll</HintPath>
     </Reference>
     <Reference Include="WindowsBase" />
     <Reference Include="YamlDotNet, Version=4.1.0.0, Culture=neutral, processorArchitecture=MSIL">

@@ -47,8 +47,7 @@ static void unpack_depth(ID3D11Device* dev, ID3D11DeviceContext* ctx, ID3D11Reso
 	int screenResX;
 	int screenResY;
 	ComPtr<ID3D11Texture2D> src_tex;
-	GRAPHICS::GET_SCREEN_RESOLUTION(&screenResX, &screenResY);
-	
+
 	hr = src->QueryInterface(__uuidof(ID3D11Texture2D), &src_tex);
 	if (hr != S_OK) throw std::system_error(hr, std::system_category());
 	D3D11_TEXTURE2D_DESC src_desc;
@@ -59,7 +58,7 @@ static void unpack_depth(ID3D11Device* dev, ID3D11DeviceContext* ctx, ID3D11Reso
 	if (hr != S_OK) throw std::system_error(hr, std::system_category());
 	if (dst.size() != src_desc.Height * src_desc.Width * 4) dst = vector<unsigned char>(src_desc.Height * src_desc.Width * 4);
 	if (stencil.size() != src_desc.Height * src_desc.Width) stencil = vector<unsigned char>(src_desc.Height * src_desc.Width);
-	
+
 	if (screenResX >= src_desc.Width)
 	{
 		for (int x = 0; x < src_desc.Width; ++x)
@@ -77,13 +76,13 @@ static void unpack_depth(ID3D11Device* dev, ID3D11DeviceContext* ctx, ID3D11Reso
 	else
 	{
 		// resample, for when depth map is bigger than screen image.
-		float scale = ((float) src_desc.Width) / ((float) screenResX);
+		float scale = ((float)src_desc.Width) / ((float)screenResX);
 		dst = vector<unsigned char>(screenResY * screenResX * 4);
 
 		for (int x = 0; x < screenResX; ++x) // screenResX
 		{
 			int scaledX = int(x*scale);
-			
+
 			for (int y = 0; y < screenResY; ++y) //screenResY
 			{
 				int scaledY = int(y*scale);
@@ -95,7 +94,7 @@ static void unpack_depth(ID3D11Device* dev, ID3D11DeviceContext* ctx, ID3D11Reso
 			}
 		}
 	}
-		
+
 	ctx->Unmap(src, 0);
 }
 static ComPtr<ID3D11Texture2D> CreateTexHelper(ID3D11Device* dev, DXGI_FORMAT fmt, int width, int height, int samples)
@@ -139,7 +138,7 @@ void CreateTextureIfNeeded(ID3D11Device* dev, ID3D11Resource* for_res, ComPtr<ID
 	hr = for_res->QueryInterface(__uuidof(ID3D11Texture2D), &tex);
 	if (hr != S_OK) throw std::system_error(hr, std::system_category());
 	tex->GetDesc(&desc);
-	if(*tex_target == nullptr)
+	if (*tex_target == nullptr)
 	{
 		*tex_target = CreateTexHelper(dev, desc.Format, desc.Width, desc.Height, desc.SampleDesc.Count);
 	}
@@ -152,7 +151,7 @@ void CreateTextureIfNeeded(ID3D11Device* dev, ID3D11Resource* for_res, ComPtr<ID
 }
 int getBitsPerPixel(DXGI_FORMAT fmt)
 {
-	switch(fmt)
+	switch (fmt)
 	{
 	case DXGI_FORMAT_B8G8R8A8_UNORM:
 		return 4;
@@ -177,11 +176,11 @@ void copyTexToVector(ID3D11Device* dev, ID3D11DeviceContext* ctx, ID3D11Resource
 	hr = ctx->Map(tex_copy.Get(), 0, D3D11_MAP_READ, 0, &map);
 	if (hr != S_OK) throw std::system_error(hr, std::system_category());
 	if (buffer.size() != desc.Height * desc.Width * bpp) buffer = vector<unsigned char>(desc.Height * desc.Width * bpp);
-	for(int y = 0; y < desc.Height; ++y)
+	for (int y = 0; y < desc.Height; ++y)
 	{
 		for (int x = 0; x < desc.Width; ++x) {
-			unsigned char* p = &buffer[y * desc.Width * bpp + (x*4)];
-			unsigned char* b = (unsigned char*)map.pData + map.RowPitch*y + (x*4);
+			unsigned char* p = &buffer[y * desc.Width * bpp + (x * 4)];
+			unsigned char* b = (unsigned char*)map.pData + map.RowPitch*y + (x * 4);
 			p[0] = b[2];
 			p[1] = b[1];
 			p[2] = b[0];
@@ -191,12 +190,12 @@ void copyTexToVector(ID3D11Device* dev, ID3D11DeviceContext* ctx, ID3D11Resource
 
 	}
 	ctx->Unmap(tex_copy.Get(), 0);
-	
+
 }
 void CopyIfRequested()
 {
 	unique_lock<mutex> lk(copy_mtx);
-	if(request_copy)
+	if (request_copy)
 	{
 		unpack_depth(lastDev.Get(), lastCtx.Get(), depthRes.Get(), depthBuf, stencilBuf);
 		copyTexToVector(lastDev.Get(), lastCtx.Get(), colorRes.Get(), colorBuf);
@@ -223,7 +222,7 @@ void ExtractColorBuffer(ID3D11Device* dev, ID3D11DeviceContext* ctx, ID3D11Resou
 	ctx->CopyResource(colorRes.Get(), tex);
 	last_color_time = high_resolution_clock::now();
 	//copyTexToVector(dev, ctx, tex, colorBuf);
-	
+
 }
 
 void ExtractConstantBuffer(ID3D11Device* dev, ID3D11DeviceContext* ctx, ID3D11Buffer* buf) {
@@ -236,7 +235,7 @@ void ExtractConstantBuffer(ID3D11Device* dev, ID3D11DeviceContext* ctx, ID3D11Bu
 	}
 	ctx->CopyResource(constantBuf.Get(), buf);
 	last_constant_time = high_resolution_clock::now();
-	
+
 }
 
 extern "C" {
@@ -283,4 +282,4 @@ extern "C" {
 	__declspec(dllexport) long long int export_get_current_time() {
 		return duration_cast<milliseconds>(high_resolution_clock::now().time_since_epoch()).count();
 	}
-}	
+}
